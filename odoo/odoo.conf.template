@@ -1,0 +1,17 @@
+[options]
+admin_passwd = <replace>
+db_host = postgres
+db_port = False
+db_user = odoo
+db_password = <replace>
+addons_path = /home/odoo/emanju/web,/home/odoo/emanju/partner-contact,/home/odoo/emanju/external_modules,/home/odoo/emanju/emanju_custom_modules,/usr/lib/python3/dist-packages/odoo/addons
+limit_time_cpu = 36000
+limit_time_real = 72000
+proxy_mode = 1
+log_level = debug
+longpolling_port = 8071
+workers = 4
+max_cron_threads = 1
+data_dir = /home/odoo/.local/share/Odoo
+dbfilter = ^%d$
+list_db = False

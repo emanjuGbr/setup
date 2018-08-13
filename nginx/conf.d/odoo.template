@@ -1,0 +1,53 @@
+server {
+    listen 80;
+    server_name <replace_sn>;
+    server_tokens off;
+    add_header Strict-Transport-Security "max-age=63072000; includeSubdomains; preload";
+
+    location ~* /.well-known/acme-challenge {
+        proxy_pass http://10.18.77.5;
+    }
+
+#    location / {
+#        return 301 https://$host$request_uri ;
+#    }
+#}
+#
+#server {
+#    listen        443 ssl;
+#    server_name   <replace_sn>;
+#    server_tokens off;
+    client_max_body_size 2g;                                                                                      
+    include conf.d/gzip.inc;
+    include conf.d/odoo-rewrite.inc;
+#    include conf.d/ssl.inc;
+#    ssl_certificate        /etc/letsencrypt/live/<replace_sn>/fullchain.pem;
+#    ssl_certificate_key    /etc/letsencrypt/live/<replace_sn>/privkey.pem;
+    proxy_buffers 16 64k;                                                                                                                                                                                                                    
+    proxy_buffer_size 128k;
+
+    location / {
+        proxy_pass    http://odoo:8069;
+        proxy_next_upstream error timeout invalid_header http_500 http_502 http_503;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forward-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_redirect off;
+    }
+
+    location ~* /web/static/ {
+        proxy_cache_valid 200 60m;
+        proxy_buffering    on;
+        expires 864000;
+        proxy_pass http://odoo:8069;
+    }
+
+    location ~* /longpolling {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forward-For $proxy_add_x_forwarded_for;
+        proxy_pass http://odoo:8071;
+    }
+
+}
