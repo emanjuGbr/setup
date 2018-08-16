@@ -9,7 +9,7 @@ services:
      - "443:443"
     volumes:
      - ./nginx/conf.d:/etc/nginx/conf.d/:ro
-     - /etc/letsencrypt/:/etc/letsencrypt/:ro
+     - ./etc/letsencrypt/:/etc/letsencrypt/:ro
     depends_on:
      - odoo
     read_only: true
@@ -71,7 +71,7 @@ services:
     image: certbot/certbot
     command: renew
     volumes:
-     - /etc/letsencrypt:/etc/letsencrypt
+     - ./etc/letsencrypt:/etc/letsencrypt
     networks:
       network:
         ipv4_address: 10.18.77.5
