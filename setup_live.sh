@@ -1,7 +1,7 @@
 #!/bin/bash
 
 genpasswd() {
-	openssl rand -base64 32
+	openssl rand -hex 32
 }
 
 # generate odoo master & postgres password
