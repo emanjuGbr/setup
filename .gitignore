@@ -1,4 +1,10 @@
 odoo/odoo.conf
+odoo/odoo-config.conf
 .env
 postgres/
 nginx/conf.d/*.conf
+etc/
+odoo/sessions
+odoo/addons
+odoo/filestore
+filestore

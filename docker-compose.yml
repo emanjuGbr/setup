@@ -12,6 +12,7 @@ services:
      - ./etc/letsencrypt/:/etc/letsencrypt/:ro
     depends_on:
      - odoo
+     - odoo-config
     read_only: true
     tmpfs:
      - /var/cache/nginx
@@ -31,6 +32,7 @@ services:
     volumes:
      - ./odoo/:/home/odoo/
      - ./odoo/odoo.conf:/etc/odoo/odoo.conf:ro
+     - $STORAGEBOX/filestore:/home/odoo/filestore
     depends_on:
      - postgres
     environment:
@@ -47,6 +49,31 @@ services:
     networks:
       network:
         ipv4_address: 10.18.77.3
+
+  odoo-config:
+    build:
+      context: ./odoo/
+    restart: always
+    volumes:
+     - ./odoo/:/home/odoo/
+     - ./odoo/odoo-config.conf:/etc/odoo/odoo.conf:ro
+     - $STORAGEBOX/filestore:/home/odoo/filestore
+    depends_on:
+     - postgres
+    environment:
+     - PGHOST=postgres
+     - PGUSER=odoo
+     - PGPASSWORD
+    tmpfs:
+     - /run
+     - /tmp
+    logging:
+      options:
+        max-size: "100m"
+        max-file: "10"
+    networks:
+      network:
+        ipv4_address: 10.18.77.6
         
   postgres:
     image: postgres:9.6-alpine
