@@ -25,16 +25,20 @@ $sed "s/<replace_sn>/$1/g" nginx/conf.d/$1.conf
 
 docker exec -ti setup_nginx_1 nginx -s reload
 echo  " ok"
-echo -n "2.) create certificate."
+echo "2.) create certificate."
+{
 docker run --rm -ti --network setup_network --ip 10.18.77.5 -v $(pwd)/etc/letsencrypt:/etc/letsencrypt -v /tmp:/var/log/letsencrypt \
         certbot/certbot certonly \
         --agree-tos \
         -m mahlich@emanju.de \
         --standalone \
         --preferred-challenges http \
-        -d $1
-echo " ok"
-echo -n "3.) activate tls for $1."
+        -d $1 &&
+echo "Certficate created"
+} || {
+echo "Certficate creation failed"
+}
+echo "3.) activate tls for $1."
 
 $sed "s/#//g" nginx/conf.d/$1.conf
 echo " ok"
