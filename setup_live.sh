@@ -9,9 +9,10 @@ PW="$(genpasswd 32)"
 sed "s/<replace>/$PW/g" odoo/odoo.conf.template > odoo/odoo.conf
 sed "s/<replace>/$PW/g" odoo/odoo-config.conf.template > odoo/odoo-config.conf
 echo -e "PGPASSWORD=$PW\nPOSTGRES_PASSWORD=$PW" > .env
-if [ "$STORAGEBOX_PATH" == "" ]; then
-	STORAGEBOX_PATH=$(pwd);
+if [ "$1" == "" ]; then
+	echo "please insert filestore path"
 fi
+STORAGEBOX_PATH="$1"
 echo "STORAGEBOX=$STORAGEBOX_PATH" >> .env
 # change directory access rights
 docker run --rm -t --user root -v $(pwd)/odoo/:/odoo -v $STORAGEBOX_PATH/filestore:/odoo/filestore odoo:11.0 chown odoo: /odoo -R
