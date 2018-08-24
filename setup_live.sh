@@ -10,7 +10,7 @@ sed "s/<replace>/$PW/g" odoo/odoo.conf.template > odoo/odoo.conf
 sed "s/<replace>/$PW/g" odoo/odoo-config.conf.template > odoo/odoo-config.conf
 echo -e "PGPASSWORD=$PW\nPOSTGRES_PASSWORD=$PW" > .env
 if [ "$STORAGEBOX_PATH" == "" ]; then
-	STORAGEBOX_PATH=$(pwd)/odoo;
+	STORAGEBOX_PATH=$(pwd);
 fi
 echo "STORAGEBOX=$STORAGEBOX_PATH" >> .env
 # change directory access rights
