@@ -11,6 +11,7 @@ sed "s/<replace>/$PW/g" odoo/odoo-config.conf.template > odoo/odoo-config.conf
 echo -e "PGPASSWORD=$PW\nPOSTGRES_PASSWORD=$PW" > .env
 if [ "$1" == "" ]; then
 	echo "please insert filestore path"
+	exit 1
 fi
 STORAGEBOX_PATH="$1"
 echo "STORAGEBOX=$STORAGEBOX_PATH" >> .env
