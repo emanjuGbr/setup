@@ -46,4 +46,4 @@ if [ "$1" == "config.emanju.de" ];
 then
 	$sed "s/odoo:/odoo-config:/g" nginx/conf.d/$1.conf
 fi
-docker exec -ti setup_nginx_1 nginx -s reload
+docker restart setup_nginx_1
