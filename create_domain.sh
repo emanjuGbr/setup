@@ -1,11 +1,27 @@
 #!/bin/bash
 set -e
-if [[ "$1" == ""  ]];
+
+if [ $# -le 1 ];
 then
-	echo "domain is missing";
+	echo "Arguments are missing -domain -instance type (-c or -l)"
 	exit 1;
 fi
-echo "domain: $1"
+
+if [ "$1" == ""  ];
+then
+	echo "Please enter the domain e.g. demo.emanju.de"
+	exit 1;
+fi
+
+if [ "$2" == "-c" ] || [ "$2" == "-l" ];
+then
+	echo "Adding domain: $1 with parameter $2"
+else
+	echo "Please specify wether this is the config (-c) or live (-l) instance"
+	exit 1;
+fi
+
+
 
 if [ "$(uname)" == "Darwin" ];
 then
@@ -42,7 +58,8 @@ echo "3.) activate tls for $1."
 
 $sed "s/#//g" nginx/conf.d/$1.conf
 echo " ok"
-if [ "$1" == "config.emanju.de" ];
+
+if [ "$2" == "-c" ];
 then
 	$sed "s/odoo:/odoo-config:/g" nginx/conf.d/$1.conf
 fi
