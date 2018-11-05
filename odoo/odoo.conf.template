@@ -13,5 +13,5 @@ longpolling_port = 8071
 workers = 4
 max_cron_threads = 1
 data_dir = /home/odoo/
-dbfilter = ^%d$
+dbfilter = ^%h$
 list_db = False
